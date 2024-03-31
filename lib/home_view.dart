@@ -1,11 +1,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:webrtc_demo/signaling.dart';
+import 'package:webrtc_demo/services/signaling.dart';
 
 
 
@@ -238,49 +237,49 @@ class HomePageState extends State<HomePage> {
   }
 
 
-  void enableScreenShare() async {
-    if (lkPlatformIs(PlatformType.android)) {
-      print("PlatformType.android --> ${PlatformType.android}");
-      // Android specific
-      requestBackgroundPermission([bool isRetry = false]) async {
-        print("isRetry --> $isRetry");
-        // Required for android screenshare.
-        try {
-          bool hasPermissions = await FlutterBackground.hasPermissions;
-          print("hasPermissions --> $hasPermissions");
-          if (!isRetry) {
-            const androidConfig = FlutterBackgroundAndroidConfig(
-              notificationTitle: 'Screen Sharing',
-              notificationText: 'LiveKit Example is sharing the screen.',
-              notificationImportance: AndroidNotificationImportance.Default,
-              notificationIcon: AndroidResource(name: 'livekit_ic_launcher', defType: 'mipmap'),
-            );
-            hasPermissions = await FlutterBackground.initialize(androidConfig: androidConfig);
-          }
-          if (hasPermissions && !FlutterBackground.isBackgroundExecutionEnabled) {}
-          await FlutterBackground.enableBackgroundExecution();
-        } catch (e) {
-          if (!isRetry) {
-            return await Future<void>.delayed(const Duration(seconds: 1), () => requestBackgroundPermission(true));
-          }
-          print('could not publish video: $e');
-        }
-      }
-
-      await requestBackgroundPermission();
-    }
-    if (lkPlatformIs(PlatformType.iOS)) {
-      var track = await LocalVideoTrack.createScreenShareTrack(
-        const ScreenShareCaptureOptions(
-          useiOSBroadcastExtension: true,
-          maxFrameRate: 15.0,
-        ),
-      );
-      await participant.publishVideoTrack(track);
-      return;
-    }
-    await participant.setScreenShareEnabled(true, captureScreenAudio: true);
-  }
+  // void enableScreenShare() async {
+  //   if (lkPlatformIs(PlatformType.android)) {
+  //     print("PlatformType.android --> ${PlatformType.android}");
+  //     // Android specific
+  //     requestBackgroundPermission([bool isRetry = false]) async {
+  //       print("isRetry --> $isRetry");
+  //       // Required for android screenshare.
+  //       try {
+  //         bool hasPermissions = await FlutterBackground.hasPermissions;
+  //         print("hasPermissions --> $hasPermissions");
+  //         if (!isRetry) {
+  //           const androidConfig = FlutterBackgroundAndroidConfig(
+  //             notificationTitle: 'Screen Sharing',
+  //             notificationText: 'LiveKit Example is sharing the screen.',
+  //             notificationImportance: AndroidNotificationImportance.Default,
+  //             notificationIcon: AndroidResource(name: 'livekit_ic_launcher', defType: 'mipmap'),
+  //           );
+  //           hasPermissions = await FlutterBackground.initialize(androidConfig: androidConfig);
+  //         }
+  //         if (hasPermissions && !FlutterBackground.isBackgroundExecutionEnabled) {}
+  //         await FlutterBackground.enableBackgroundExecution();
+  //       } catch (e) {
+  //         if (!isRetry) {
+  //           return await Future<void>.delayed(const Duration(seconds: 1), () => requestBackgroundPermission(true));
+  //         }
+  //         print('could not publish video: $e');
+  //       }
+  //     }
+  //
+  //     await requestBackgroundPermission();
+  //   }
+  //   if (lkPlatformIs(PlatformType.iOS)) {
+  //     var track = await LocalVideoTrack.createScreenShareTrack(
+  //       const ScreenShareCaptureOptions(
+  //         useiOSBroadcastExtension: true,
+  //         maxFrameRate: 15.0,
+  //       ),
+  //     );
+  //     await participant.publishVideoTrack(track);
+  //     return;
+  //   }
+  //   await participant.setScreenShareEnabled(true, captureScreenAudio: true);
+  // }
 
 
   // Future<void> makeScreenSharing() async {
@@ -370,7 +369,7 @@ class HomePageState extends State<HomePage> {
         ],
       );
     } else {
-      userTypeWidget = SizedBox(); // Placeholder if there's no widget for other user types
+      userTypeWidget = SizedBox();
     }
 
     return WithForegroundTask(

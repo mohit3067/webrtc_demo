@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:horizontal_picker/horizontal_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:webrtc_demo/home_view.dart';
-import 'package:webrtc_demo/login_screen.dart';
-import 'home_page.dart';
+import 'package:webrtc_demo/screens/home_page.dart';
+import 'package:webrtc_demo/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const LoginScreen(),
+      home: const MyHomePage(),
     );
   }
 }

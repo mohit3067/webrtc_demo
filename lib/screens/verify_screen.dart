@@ -3,8 +3,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:webrtc_demo/home_page.dart';
-import 'package:webrtc_demo/user_model.dart';
+import 'package:webrtc_demo/screens/home_page.dart';
+import 'package:webrtc_demo/services/user_model.dart';
 
 class VerifyScreen extends StatefulWidget {
   final String verificationId;
